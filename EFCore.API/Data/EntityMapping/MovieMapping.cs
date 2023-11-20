@@ -23,5 +23,21 @@ public class MovieMapping : IEntityTypeConfiguration<Movie>
         builder.Property(m => m.Synopsis)
             .HasColumnType("varchar(max)")
             .HasColumnName("Plot");
+
+        builder
+            .HasOne(m => m.Genre)
+            .WithMany(g => g.Movies)
+            .HasPrincipalKey(g => g.Id)
+            .HasForeignKey(m => m.MainGenreId);
+        
+        // Seed - data that needs to be created always
+        builder.HasData(new Movie
+        {
+            Id = 1,
+            Title = "The Shawshank Redemption",
+            ReleaseDate = new DateTime(1994, 9, 22),
+            Synopsis = "Morgan Freeman and Tim Robbins star in this classic prison drama.",
+            MainGenreId = 1
+        });
     }
 }
