@@ -30,6 +30,12 @@ public class MovieMapping : IEntityTypeConfiguration<Movie>
             .HasColumnType("varchar(32)")
             .HasConversion<string>();
 
+        builder.OwnsOne(m => m.Director)
+            .ToTable("Movie_Directors");
+        
+        builder.OwnsMany(m => m.Actors)
+            .ToTable("Movie_Actors");
+
         builder
             .HasOne(m => m.Genre)
             .WithMany(g => g.Movies)
@@ -46,5 +52,14 @@ public class MovieMapping : IEntityTypeConfiguration<Movie>
             MainGenreId = 1,
             AgeRating = AgeRating.Adolescent
         });
+
+        builder.OwnsOne(m => m.Director)
+            .HasData(new {MovieId = 1, FirstName = "David", LastName = "Fincher"});
+        
+        builder.OwnsMany(m => m.Actors)
+            .HasData(
+                new {MovieId = 1, Id = 1, FirstName = "Morgan", LastName = "Freeman"},
+                new {MovieId = 1, Id = 2, FirstName = "Tim", LastName = "Robbins"});
+
     }
 }
