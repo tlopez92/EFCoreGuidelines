@@ -16,6 +16,18 @@ public class MoviesController(MoviesContext context) : Controller
         return Ok(await context.Movies.ToListAsync());
     }
 
+    [HttpGet("until-age/{ageRating}")]
+    [ProducesResponseType(typeof(List<MovieTitle>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAllUntilAge([FromRoute] AgeRating ageRating)
+    {
+        var filteredTitles = await context.Movies
+            .Where(m => m.AgeRating <= ageRating)
+            .Select(m => new MovieTitle {Id = m.Id, Title = m.Title})
+            .ToListAsync();
+
+        return Ok(filteredTitles);
+    }
+
     [HttpGet("{id:int}")]
     [ProducesResponseType(typeof(Movie), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

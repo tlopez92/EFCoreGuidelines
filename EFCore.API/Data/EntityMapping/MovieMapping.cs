@@ -1,4 +1,5 @@
-﻿using EFCore.API.Models;
+﻿using EFCore.API.Data.ValueConverters;
+using EFCore.API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,11 +19,16 @@ public class MovieMapping : IEntityTypeConfiguration<Movie>
             .IsRequired();
 
         builder.Property(m => m.ReleaseDate)
-            .HasColumnType("date");
+            .HasColumnType("char(8)")
+            .HasConversion(new DateTimeToChar8Converter());
 
         builder.Property(m => m.Synopsis)
             .HasColumnType("varchar(max)")
             .HasColumnName("Plot");
+
+        builder.Property(m => m.AgeRating)
+            .HasColumnType("varchar(32)")
+            .HasConversion<string>();
 
         builder
             .HasOne(m => m.Genre)
@@ -37,7 +43,8 @@ public class MovieMapping : IEntityTypeConfiguration<Movie>
             Title = "The Shawshank Redemption",
             ReleaseDate = new DateTime(1994, 9, 22),
             Synopsis = "Morgan Freeman and Tim Robbins star in this classic prison drama.",
-            MainGenreId = 1
+            MainGenreId = 1,
+            AgeRating = AgeRating.Adolescent
         });
     }
 }
