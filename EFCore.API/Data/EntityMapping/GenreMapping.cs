@@ -9,7 +9,9 @@ public class GenreMapping : IEntityTypeConfiguration<Genre>
 {
     public void Configure(EntityTypeBuilder<Genre> builder)
     {
-        builder.Property(g => g.CreatedDate)
+        // This is a shadow property
+        builder.Property<DateTime>("CreatedDate")
+            .HasColumnName("CreatedAt")
             .HasValueGenerator<CreatedDateGenerator>();
         
         builder.HasData(new Genre { Id = 1, Name = "Drama" });
