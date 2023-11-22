@@ -1,22 +1,19 @@
-using EfCore.Testing.Data.EntityMapping;
-using EfCore.Testing.Models;
+using EfCore.Testing.SimpleApi.Data.EntityMapping;
+using EfCore.Testing.SimpleApi.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace EfCore.Testing.Data;
+namespace EfCore.Testing.SimpleApi.Data;
 
 public class MoviesContext : DbContext
 {
-    public MoviesContext(DbContextOptions<MoviesContext> options) : base(options)
-    {
-    }
-
-    public DbSet<Movie> Movies => Set<Movie>();
+    public MoviesContext(DbContextOptions<MoviesContext> options)
+        :base(options)
+    { }
+    
     public DbSet<Genre> Genres => Set<Genre>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(
-            "Data Source=localhost;Initial Catalog=MoviesDb; User Id=sa;Password=Password123;TrustServerCertificate=True");
         // Not proper logging
         optionsBuilder.LogTo(Console.WriteLine);
         base.OnConfiguring(optionsBuilder);
@@ -25,6 +22,5 @@ public class MoviesContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new GenreMapping());
-        modelBuilder.ApplyConfiguration(new MovieMapping());
     }
 }
