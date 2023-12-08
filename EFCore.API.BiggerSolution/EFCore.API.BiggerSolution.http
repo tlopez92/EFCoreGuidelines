@@ -1,0 +1,6 @@
+@EFCore.API.BiggerSolution_HostAddress = http://localhost:5262
+
+GET {{EFCore.API.BiggerSolution_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
